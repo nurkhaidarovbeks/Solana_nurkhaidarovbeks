@@ -271,3 +271,26 @@ Week-10/
 4. Написать тест: трое пользователей вносят разные суммы, проверить доли по shares.
 5. Добавить инструкцию `withdraw_all`, которая сжигает все shares пользователя за один вызов.
 6. Закрывать карточку (`close`), если у пользователя не осталось shares, и возвращать ренту.
+
+---
+
+## Как выполнены задания
+
+| № | Задание | Что изменено в контракте | Тест |
+|---|---|---|---|
+| 1 | комиссия 1% на `fee_wallet` | `DEPOSIT_FEE_BPS = 100`; `fee_wallet` задаётся в `initialize_vault` и хранится в `VaultState`; в `deposit` `fee` идёт на `fee_wallet`, в vault — `net`, shares считаются от `net`; чужой кошелёк — `WrongFeeWallet` | `deposit: A вносит 100 токенов → 1 токен комиссии, 99 shares`; `B вносит 50 …`; `чужой fee_wallet — ошибка` |
+| 2 | минимальный депозит 1 токен | `min_deposit = 10^decimals` в `VaultState`; `DepositTooSmall` при меньшей сумме | `deposit: меньше минимума (1 токен) — ошибка`; `ровно минимум (1 токен) проходит` |
+| 3 | `paused` — остановка депозитов | `paused` в `VaultState`, `set_paused` только для админа, `deposit` на паузе — `VaultPaused`; вывод на паузе работает | `set_paused: не админ — ошибка`; `deposit: vault на паузе — ошибка, после снятия паузы снова работает` |
+| 4 | тест на трёх пользователей | — | `три пользователя: доли по shares пропорциональны внесённым суммам` |
+| 5 | `withdraw_all` | новая инструкция с теми же аккаунтами, что у `withdraw`; количество shares берётся из `user_share_account.amount`; общая логика вывода вынесена в функцию `withdraw_shares`, её используют `withdraw` и `withdraw_all` | `withdraw_all: B сжигает все shares за один вызов` — shares 0, токены вернулись, `total_*` уменьшились; `withdraw_all: shares нет — ошибка` |
+| 6 | закрыть карточку без shares и вернуть ренту | инструкция `close_user_card`: `close = user`, закрывает только владелец, проверка `user_card.shares == 0` (`CardNotEmpty`) | `close_user_card: у пользователя ещё есть shares — ошибка`; `shares 0 → карточка закрыта, рента возвращена` (баланс вырос ровно на ренту); `deposit: после закрытия карточки — ошибка`; `withdraw_all + close_user_card: C выводит всё и закрывает карточку` |
+
+Сценарий вывода в тестах (после депозитов из заданий 1–4 в vault 357.39 токена и столько же shares):
+
+| Шаг | Действие | Осталось в vault |
+|---|---|---|
+| 1 | A: `withdraw(49)` | 308.39 |
+| 2 | B: `withdraw_all` (59.4) → `close_user_card` | 248.99 |
+| 3 | C: `withdraw_all` (198.99) → `close_user_card` | 50 (shares A) |
+
+Новые ошибки: `CardNotEmpty`, `DepositTooSmall`, `VaultPaused`, `WrongFeeWallet`, `Unauthorized`.

@@ -213,3 +213,26 @@ Week-9/
 2. Добавить минимальный депозит (например, 1 токен).
 3. Добавить флаг `paused` в `VaultState`: админ может остановить депозиты.
 4. Написать тест: трое пользователей вносят разные суммы, проверить доли по shares.
+
+---
+
+## Как выполнены задания
+
+| № | Задание | Что изменено в контракте | Тест |
+|---|---|---|---|
+| 1 | комиссия 1% на `fee_wallet` | константы `DEPOSIT_FEE_BPS = 100`, `BPS_DENOMINATOR = 10_000`; `fee_wallet` передаётся в `initialize_vault` и сохраняется в `VaultState`; в `deposit` `fee` переводится на `fee_wallet`, в vault идёт `net = amount − fee`, shares считаются от `net`; чужой кошелёк — `WrongFeeWallet` | `deposit: A вносит 100 токенов → 1 токен комиссии, 99 shares`; `B вносит 50 токенов → 0.5 токена комиссии, 49.5 shares`; `чужой fee_wallet — ошибка` |
+| 2 | минимальный депозит 1 токен | поле `min_deposit` в `VaultState`, в `initialize_vault` = `10^decimals` (1 токен); в `deposit` проверка `amount >= min_deposit` (`DepositTooSmall`) | `deposit: меньше минимума (1 токен) — ошибка` (0.5 и 0.999999 токена); `ровно минимум (1 токен) проходит` |
+| 3 | `paused` — остановка депозитов | поле `paused` в `VaultState`, инструкция `set_paused(paused)` только для админа; в `deposit` проверка `require!(!paused, VaultPaused)` | `set_paused: не админ — ошибка`; `deposit: vault на паузе — ошибка, после снятия паузы снова работает` |
+| 4 | тест на трёх пользователей | — | `три пользователя: доли по shares пропорциональны внесённым суммам` — A, B и C вносят разные суммы; проверяются точные shares каждого, что их сумма равна `total_shares`, и что `shares_i / total_shares = deposited_i / total_tokens` |
+
+Пример расчёта из тестов (6 decimals):
+
+| Пользователь | Внёс всего | Комиссия | В vault (`deposited`) | Shares |
+|---|---|---|---|---|
+| A | 100 | 1 | 99 | 99 |
+| B | 50 + 10 | 0.6 | 59.4 | 59.4 |
+| C | 1 + 200 | 2.01 | 198.99 | 198.99 |
+
+На `fee_wallet` в итоге 3.61 токена.
+
+Новые ошибки: `DepositTooSmall`, `VaultPaused`, `WrongFeeWallet`, `Unauthorized`.
