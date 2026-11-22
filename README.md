@@ -43,6 +43,7 @@ Vault для SPL-токена и личные карточки пользова�
 
 - Скрипт `yarn create-pool` создаёт два токена, минтит их на кошелёк и создаёт пул `TOKEN_A / TOKEN_B`.
 - Адреса токенов и пула сохраняются в `devnet-pool.json`.
+- Мой пул: [6VHdA1GnZfxPBBo89jTsSbjGeX1AEhpoKMV5YP9uBDTg](https://explorer.solana.com/address/6VHdA1GnZfxPBBo89jTsSbjGeX1AEhpoKMV5YP9uBDTg?cluster=devnet)
 - Контракт на этой неделе не меняется, задания 1–6 перенесены из недели 10.
 
 ## Запуск

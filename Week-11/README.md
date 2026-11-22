@@ -341,3 +341,16 @@ Week-11/
 | 4 | тест на трёх пользователей | — | `три пользователя: доли по shares пропорциональны внесённым суммам` |
 | 5 | `withdraw_all` | вывод всех shares пользователя одним вызовом | `withdraw_all: B сжигает все shares за один вызов`; `withdraw_all: shares нет — ошибка` |
 | 6 | закрыть пустую карточку | `close_user_card` закрывает карточку, только если shares = 0 (`CardNotEmpty`), рента возвращается владельцу | `close_user_card: shares 0 → карточка закрыта, рента возвращена` |
+
+---
+
+## Мой пул на Raydium (devnet)
+
+| | Адрес |
+|---|---|
+| Пул `TOKEN_A / TOKEN_B` | [6VHdA1GnZfxPBBo89jTsSbjGeX1AEhpoKMV5YP9uBDTg](https://explorer.solana.com/address/6VHdA1GnZfxPBBo89jTsSbjGeX1AEhpoKMV5YP9uBDTg?cluster=devnet) |
+| `TOKEN_A` | [FpgupWes1jeihxsTXNGa2RTmFmKgcoezvJi2sek5Cew5](https://explorer.solana.com/address/FpgupWes1jeihxsTXNGa2RTmFmKgcoezvJi2sek5Cew5?cluster=devnet) |
+| `TOKEN_B` | [3R5cZSrGBh5VNP6NpotEFmpZhnxxDB7ep3LY8eWAexPQ](https://explorer.solana.com/address/3R5cZSrGBh5VNP6NpotEFmpZhnxxDB7ep3LY8eWAexPQ?cluster=devnet) |
+| Транзакция создания | [5f4vFJdy…UerVaMC](https://explorer.solana.com/tx/5f4vFJdyczE7DJ2RfPp3wnmnYk6vETxjNNnaSxpwGdAT8Ljy42wv6eCi41M3TqNSimuih1ePqjEeLYZHrUerVaMC?cluster=devnet) |
+
+Владелец аккаунта пула — программа Raydium CLMM `DRayAUgENGQBKVaX8owNhgzkEDyoHTGVEGHVJT1E9pfH`.
