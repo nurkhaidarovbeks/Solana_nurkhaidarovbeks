@@ -11,6 +11,7 @@
 | 9 | [Week-9](./Week-9) | комиссия 1% на `fee_wallet`, минимальный депозит, пауза депозитов, тест на доли трёх пользователей |
 | 10 | [Week-10](./Week-10) | задания 1–4, `withdraw_all`, закрытие пустой карточки с возвратом ренты |
 | 11 | [Week-11](./Week-11) | свои токены и CLMM-пул на Raydium devnet, задания 1–6 |
+| 12 | [Week-12](./Week-12) | swap через Raydium, ограничение swap до 50% TOKEN_A, задания 1–6 |
 
 ## Week 8
 
@@ -46,10 +47,18 @@ Vault для SPL-токена и личные карточки пользова�
 - Мой пул: [6VHdA1GnZfxPBBo89jTsSbjGeX1AEhpoKMV5YP9uBDTg](https://explorer.solana.com/address/6VHdA1GnZfxPBBo89jTsSbjGeX1AEhpoKMV5YP9uBDTg?cluster=devnet)
 - Контракт на этой неделе не меняется, задания 1–6 перенесены из недели 10.
 
+## Week 12
+
+Vault меняет свои токены через пул Raydium CLMM (CPI в Raydium).
+
+- Задания 1–6 перенесены и работают вместе с Raydium.
+- Добавил ограничение: за один swap A → B нельзя потратить больше 50% TOKEN_A vault.
+- Тесты на лимит: 496 из 990 и весь баланс отклоняются, обмен 300 проходит.
+
 ## Запуск
 
 ```bash
-cd Week-10
+cd Week-12
 yarn install
 anchor build
 anchor deploy --provider.cluster devnet
