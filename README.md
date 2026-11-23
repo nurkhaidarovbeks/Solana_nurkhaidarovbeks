@@ -12,6 +12,7 @@
 | 10 | [Week-10](./Week-10) | задания 1–4, `withdraw_all`, закрытие пустой карточки с возвратом ренты |
 | 11 | [Week-11](./Week-11) | свои токены и CLMM-пул на Raydium devnet, задания 1–6 |
 | 12 | [Week-12](./Week-12) | swap через Raydium, ограничение swap до 50% TOKEN_A, задания 1–6 |
+| 13 | [Week-13](./Week-13) | позиция в CLMM-пуле, `increase_liquidity`, учёт собранных комиссий, задания 1–7 |
 
 ## Week 8
 
@@ -55,10 +56,18 @@ Vault меняет свои токены через пул Raydium CLMM (CPI в 
 - Добавил ограничение: за один swap A → B нельзя потратить больше 50% TOKEN_A vault.
 - Тесты на лимит: 496 из 990 и весь баланс отклоняются, обмен 300 проходит.
 
+## Week 13
+
+Vault открывает позицию в CLMM-пуле Raydium, собирает комиссии и закрывает позицию.
+
+- Задания 1–7 перенесены из недели 12.
+- Добавил `increase_liquidity`: админ докладывает токены vault в уже открытую позицию.
+- В `VaultState` добавил `total_fees_a` и `total_fees_b`: сколько комиссий vault собрал за всё время. Считается при `collect_fees` и `close_position`.
+
 ## Запуск
 
 ```bash
-cd Week-12
+cd Week-13
 yarn install
 anchor build
 anchor deploy --provider.cluster devnet
